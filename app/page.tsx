@@ -34,7 +34,7 @@ export default async function Home() {
                 <span className="text-green-400 font-bold">₦{s.price_ngn?.toLocaleString()}</span>
                 <span className="text-zinc-400 text-sm">{s.spots_remaining} spots left</span>
               </div>
-              <button className="w-full mt-4 bg-green-400 text-black py-2 rounded-full font-bold text-sm">Book Now</button>
+              <a href={`/book/${s.id}`} className="block w-full mt-4 bg-green-400 text-black py-2 rounded-full font-bold text-sm text-center">Book Now</a>
             </div>
           ))}
         </div>
