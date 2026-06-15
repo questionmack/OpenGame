@@ -1,17 +1,20 @@
-async function getSessions() {
-  const res = await fetch('https://gregarious-patience-production-34e8.up.railway.app/sessions/', { cache: 'no-store' })
-  const data = await res.json()
-  return data.sessions
-}
+'use client'
+import { useEffect, useState } from 'react'
 
-export default async function Home() {
-  const sessions = await getSessions()
+export default function Home() {
+  const [sessions, setSessions] = useState<any[]>([])
+
+  useEffect(() => {
+    fetch('https://gregarious-patience-production-34e8.up.railway.app/sessions/')
+      .then(r => r.json())
+      .then(d => setSessions(d.sessions || []))
+  }, [])
 
   return (
     <main className="min-h-screen bg-black text-white">
       <nav className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
         <h1 className="text-xl font-bold text-green-400">⚽ OpenGame</h1>
-        <button className="bg-green-400 text-black px-4 py-2 rounded-full text-sm font-bold">Book a Game</button>
+        <a href="/login" className="bg-green-400 text-black px-4 py-2 rounded-full text-sm font-bold">Book a Game</a>
       </nav>
 
       <div className="px-6 py-16 text-center">
@@ -22,7 +25,7 @@ export default async function Home() {
       <div className="px-6 pb-16">
         <h3 className="text-2xl font-bold mb-6">Sessions Today</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {sessions?.map((s: any) => (
+          {sessions.map((s: any) => (
             <div key={s.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
               <div className="flex justify-between items-start mb-3">
                 <span className="bg-green-400 text-black text-xs font-bold px-2 py-1 rounded-full uppercase">{s.sport}</span>
