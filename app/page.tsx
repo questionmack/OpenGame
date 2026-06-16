@@ -1,13 +1,19 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
 
 export default function Home() {
   const [sessions, setSessions] = useState<any[]>([])
+  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
     fetch('https://gregarious-patience-production-34e8.up.railway.app/sessions/')
       .then(r => r.json())
       .then(d => setSessions(d.sessions || []))
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user?.email === 'momolistic2008@gmail.com') setIsAdmin(true)
+    })
   }, [])
 
   const sportColor: Record<string, string> = {
@@ -31,7 +37,9 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-6">
             <a href="#sessions" className="text-white/70 text-sm hover:text-white transition hidden md:block drop-shadow-lg">Sessions</a>
-            <a href="/venues" className="text-white/70 text-sm hover:text-white transition hidden md:block drop-shadow-lg">Venues</a>
+            <a href="#howitworks" className="text-white/70 text-sm hover:text-white transition hidden md:block drop-shadow-lg">How it works</a>
+            <a href="/dashboard" className="text-white/70 text-sm hover:text-white transition hidden md:block drop-shadow-lg">My bookings</a>
+            {isAdmin && <a href="/admin" className="text-red-400 text-sm hover:text-red-300 transition hidden md:block">Admin</a>}
             <a href="/login" className="bg-emerald-500 text-black px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-emerald-400 transition">Book a game</a>
           </div>
         </nav>
@@ -43,7 +51,7 @@ export default function Home() {
           </h1>
           <div className="flex gap-3 justify-center flex-wrap">
             <a href="#sessions" className="bg-emerald-500 text-black px-8 py-3.5 rounded-full text-sm font-bold hover:bg-emerald-400 transition shadow-lg shadow-emerald-500/20">Find a session</a>
-            <button className="border border-white/30 text-white px-8 py-3.5 rounded-full text-sm hover:bg-white/10 transition backdrop-blur-sm">How it works</button>
+            <a href="#howitworks" className="border border-white/30 text-white px-8 py-3.5 rounded-full text-sm hover:bg-white/10 transition backdrop-blur-sm">How it works</a>
           </div>
         </div>
       </div>
@@ -74,23 +82,56 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {sessions.map((s: any) => (
-            <div key={s.id} className="bg-[#111] border border-zinc-900 rounded-xl p-4 hover:border-zinc-700 transition group">
-              <div className="flex justify-between items-start mb-3">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase" style={{
-                  background: sportColor[s.sport] || '#10B981',
-                  color: '#000',
-                }}>{s.sport}</span>
-                <span className="text-zinc-600 text-[11px]">{s.slot} · {s.start_time?.slice(0,5)}</span>
+            <a href={`/book/${s.id}`} key={s.id} className="bg-[#111] border border-zinc-900 rounded-xl overflow-hidden hover:border-zinc-700 transition group block">
+              {s.venue_photos?.[0] && (
+                <div className="h-36 overflow-hidden">
+                  <img src={s.venue_photos[0]} alt={s.venue_name} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+                </div>
+              )}
+              <div className="p-4">
+                <div className="flex justify-between items-start mb-3">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase" style={{
+                    background: sportColor[s.sport] || '#10B981',
+                    color: '#000',
+                  }}>{s.sport}</span>
+                  <span className="text-zinc-600 text-[11px]">{s.slot} · {s.start_time?.slice(0,5)}</span>
+                </div>
+                <h3 className="font-semibold text-sm mb-0.5 group-hover:text-emerald-400 transition">{s.venue_name}</h3>
+                <p className="text-zinc-600 text-xs mb-3">{s.venue_area}, {s.venue_city}</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-emerald-500 font-bold text-sm">₦{s.price_ngn?.toLocaleString()}</span>
+                  <span className="text-zinc-600 text-[11px]">{s.spots_remaining} spots left</span>
+                </div>
               </div>
-              <h3 className="font-semibold text-sm mb-0.5 group-hover:text-emerald-400 transition">{s.venue_name}</h3>
-              <p className="text-zinc-600 text-xs mb-3">{s.venue_area}, {s.venue_city}</p>
-              <div className="flex justify-between items-center mb-3">
-                <span className="text-emerald-500 font-bold text-sm">₦{s.price_ngn?.toLocaleString()}</span>
-                <span className="text-zinc-600 text-[11px]">{s.spots_remaining} spots left</span>
-              </div>
-              <a href={`/book/${s.id}`} className="block w-full bg-emerald-500 text-black text-center py-2 rounded-full text-sm font-bold hover:bg-emerald-400 transition">Book now</a>
-            </div>
+            </a>
           ))}
+        </div>
+      </div>
+
+      <div id="howitworks" className="px-6 pb-16">
+        <h2 className="text-lg font-semibold mb-6 text-center">How it works</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+          <div className="bg-[#111] border border-zinc-900 rounded-xl p-6 text-center">
+            <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
+              <span className="text-emerald-400 text-xl font-bold">1</span>
+            </div>
+            <h3 className="font-semibold text-sm mb-2">Pick a session</h3>
+            <p className="text-zinc-500 text-xs">Browse games by sport, venue, city, or time slot</p>
+          </div>
+          <div className="bg-[#111] border border-zinc-900 rounded-xl p-6 text-center">
+            <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
+              <span className="text-emerald-400 text-xl font-bold">2</span>
+            </div>
+            <h3 className="font-semibold text-sm mb-2">Pay & confirm</h3>
+            <p className="text-zinc-500 text-xs">Secure payment via Paystack — ₦2,500 per session</p>
+          </div>
+          <div className="bg-[#111] border border-zinc-900 rounded-xl p-6 text-center">
+            <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
+              <span className="text-emerald-400 text-xl font-bold">3</span>
+            </div>
+            <h3 className="font-semibold text-sm mb-2">Show up & play</h3>
+            <p className="text-zinc-500 text-xs">Get venue details, join the WhatsApp group, and ball out</p>
+          </div>
         </div>
       </div>
 
