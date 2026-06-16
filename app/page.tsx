@@ -1,19 +1,15 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
 
 export default function Home() {
   const [sessions, setSessions] = useState<any[]>([])
-  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
     fetch('https://gregarious-patience-production-34e8.up.railway.app/sessions/')
       .then(r => r.json())
       .then(d => setSessions(d.sessions || []))
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user?.email === 'momolistic2008@gmail.com') setIsAdmin(true)
-    })
   }, [])
 
   const sportColor: Record<string, string> = {
@@ -29,21 +25,7 @@ export default function Home() {
       <div className="relative overflow-hidden min-h-[520px] flex flex-col">
         <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Eog04FYV9id8ty6bDjk4VMbdKU/hf_20260616_075502_4acfa48d-e3fa-4e80-8670-ce4b0bd08d08.png" alt="" className="absolute inset-0 w-full h-full object-cover object-[center_25%]" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-[#0A0A0A]" />
-
-        <nav className="relative z-10 flex items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-black text-xs font-bold">⚽</div>
-            <span className="font-semibold text-base tracking-tight drop-shadow-lg">OpenGame</span>
-          </div>
-          <div className="flex items-center gap-6">
-            <a href="#sessions" className="text-white/70 text-sm hover:text-white transition hidden md:block drop-shadow-lg">Sessions</a>
-            <a href="#howitworks" className="text-white/70 text-sm hover:text-white transition hidden md:block drop-shadow-lg">How it works</a>
-            <a href="/dashboard" className="text-white/70 text-sm hover:text-white transition hidden md:block drop-shadow-lg">My bookings</a>
-            {isAdmin && <a href="/admin" className="text-red-400 text-sm hover:text-red-300 transition hidden md:block">Admin</a>}
-            <a href="/login" className="bg-emerald-500 text-black px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-emerald-400 transition">Book a game</a>
-          </div>
-        </nav>
-
+        <Nav />
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 py-16 text-center">
           <p className="text-emerald-400 text-xs tracking-[3px] uppercase font-bold mb-3 drop-shadow-lg">Nigeria&apos;s pickup sports platform</p>
           <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] mb-5 drop-shadow-xl">
@@ -57,22 +39,10 @@ export default function Home() {
       </div>
 
       <div className="flex justify-center gap-8 py-6 border-b border-zinc-900">
-        <div className="text-center">
-          <p className="text-xl font-bold">11</p>
-          <p className="text-zinc-600 text-xs">Venues</p>
-        </div>
-        <div className="text-center">
-          <p className="text-xl font-bold">5</p>
-          <p className="text-zinc-600 text-xs">Cities</p>
-        </div>
-        <div className="text-center">
-          <p className="text-xl font-bold">6</p>
-          <p className="text-zinc-600 text-xs">Sports</p>
-        </div>
-        <div className="text-center">
-          <p className="text-xl font-bold text-emerald-400">₦2.5k</p>
-          <p className="text-zinc-600 text-xs">Per session</p>
-        </div>
+        <div className="text-center"><p className="text-xl font-bold">11</p><p className="text-zinc-600 text-xs">Venues</p></div>
+        <div className="text-center"><p className="text-xl font-bold">5</p><p className="text-zinc-600 text-xs">Cities</p></div>
+        <div className="text-center"><p className="text-xl font-bold">6</p><p className="text-zinc-600 text-xs">Sports</p></div>
+        <div className="text-center"><p className="text-xl font-bold text-emerald-400">₦2.5k</p><p className="text-zinc-600 text-xs">Per session</p></div>
       </div>
 
       <div id="sessions" className="px-6 pb-16 pt-8">
@@ -85,15 +55,12 @@ export default function Home() {
             <a href={`/book/${s.id}`} key={s.id} className="bg-[#111] border border-zinc-900 rounded-xl overflow-hidden hover:border-zinc-700 transition group block">
               {s.venue_photos?.[0] && (
                 <div className="h-36 overflow-hidden">
-                  <img src={s.venue_photos[0]} onError={(e: any) => e.target.src='https://images.unsplash.com/photo-1459865264687-595d652de67e?w=600&q=80'} alt={s.venue_name} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+                  <img src={s.venue_photos[0]} alt={s.venue_name} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" onError={(e: any) => e.target.src='https://images.unsplash.com/photo-1459865264687-595d652de67e?w=600&q=80'} />
                 </div>
               )}
               <div className="p-4">
                 <div className="flex justify-between items-start mb-3">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase" style={{
-                    background: sportColor[s.sport] || '#10B981',
-                    color: '#000',
-                  }}>{s.sport}</span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase" style={{ background: sportColor[s.sport] || '#10B981', color: '#000' }}>{s.sport}</span>
                   <span className="text-zinc-600 text-[11px]">{s.slot} · {s.start_time?.slice(0,5)}</span>
                 </div>
                 <h3 className="font-semibold text-sm mb-0.5 group-hover:text-emerald-400 transition">{s.venue_name}</h3>
@@ -130,20 +97,12 @@ export default function Home() {
               <span className="text-emerald-400 text-xl font-bold">3</span>
             </div>
             <h3 className="font-semibold text-sm mb-2">Show up & play</h3>
-            <p className="text-zinc-500 text-xs">Get venue details, join the WhatsApp group, and ball out</p>
+            <p className="text-zinc-500 text-xs">Chat with your team, get venue details, and ball out</p>
           </div>
         </div>
       </div>
 
-      <footer className="border-t border-zinc-900 px-6 py-8">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-black text-[10px]">⚽</div>
-            <span className="text-zinc-600 text-sm">OpenGame © 2026</span>
-          </div>
-          <p className="text-zinc-700 text-xs italic">The game is open. Everywhere.</p>
-        </div>
-      </footer>
+      <Footer />
     </main>
   )
 }
