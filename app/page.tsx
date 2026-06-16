@@ -20,56 +20,50 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#0A0A0A] text-white">
-      <nav className="flex items-center justify-between px-6 py-4 border-b border-zinc-900 sticky top-0 bg-[#0A0A0A]/90 backdrop-blur-md z-50">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-black text-xs font-bold">⚽</div>
-          <span className="font-semibold text-base tracking-tight">OpenGame</span>
-        </div>
-        <div className="flex items-center gap-6">
-          <a href="#sessions" className="text-zinc-500 text-sm hover:text-white transition hidden md:block">Sessions</a>
-          <a href="/venues" className="text-zinc-500 text-sm hover:text-white transition hidden md:block">Venues</a>
-          <a href="/login" className="bg-emerald-500 text-black px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-emerald-400 transition">Book a game</a>
-        </div>
-      </nav>
+      <div className="relative overflow-hidden min-h-[520px] flex flex-col">
+        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Eog04FYV9id8ty6bDjk4VMbdKU/hf_20260616_075502_4acfa48d-e3fa-4e80-8670-ce4b0bd08d08.png" alt="" className="absolute inset-0 w-full h-full object-cover object-[center_25%]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-[#0A0A0A]" />
 
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-[#0A0A0A]/40 to-[#0A0A0A] z-10" />
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'url(https://d8j0ntlcm91z4.cloudfront.net/user_3Eog04FYV9id8ty6bDjk4VMbdKU/hf_20260616_075502_4acfa48d-e3fa-4e80-8670-ce4b0bd08d08.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center 20%',
-          opacity: 0.35,
-        }} />
-        <div className="relative z-20 px-6 py-28 text-center">
-          <p className="text-emerald-500 text-xs tracking-[3px] uppercase font-bold mb-3">Nigeria&apos;s pickup sports platform</p>
-          <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] mb-5">
+        <nav className="relative z-10 flex items-center justify-between px-6 py-4">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-black text-xs font-bold">⚽</div>
+            <span className="font-semibold text-base tracking-tight drop-shadow-lg">OpenGame</span>
+          </div>
+          <div className="flex items-center gap-6">
+            <a href="#sessions" className="text-white/70 text-sm hover:text-white transition hidden md:block drop-shadow-lg">Sessions</a>
+            <a href="/venues" className="text-white/70 text-sm hover:text-white transition hidden md:block drop-shadow-lg">Venues</a>
+            <a href="/login" className="bg-emerald-500 text-black px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-emerald-400 transition">Book a game</a>
+          </div>
+        </nav>
+
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 py-16 text-center">
+          <p className="text-emerald-400 text-xs tracking-[3px] uppercase font-bold mb-3 drop-shadow-lg">Nigeria&apos;s pickup sports platform</p>
+          <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] mb-5 drop-shadow-xl">
             The game is open.<br/>Everywhere.
           </h1>
-          <p className="text-zinc-400 text-base mb-8 max-w-md mx-auto">
-            Football, basketball & more at premium venues across Lagos, Abuja, Kano, Ibadan & Port Harcourt
-          </p>
           <div className="flex gap-3 justify-center flex-wrap">
-            <a href="#sessions" className="bg-emerald-500 text-black px-8 py-3.5 rounded-full text-sm font-bold hover:bg-emerald-400 transition">Find a session</a>
-            <button className="border border-zinc-700 text-zinc-300 px-8 py-3.5 rounded-full text-sm hover:border-zinc-500 hover:text-white transition">How it works</button>
+            <a href="#sessions" className="bg-emerald-500 text-black px-8 py-3.5 rounded-full text-sm font-bold hover:bg-emerald-400 transition shadow-lg shadow-emerald-500/20">Find a session</a>
+            <button className="border border-white/30 text-white px-8 py-3.5 rounded-full text-sm hover:bg-white/10 transition backdrop-blur-sm">How it works</button>
           </div>
-          <div className="flex justify-center gap-8 mt-12">
-            <div className="text-center">
-              <p className="text-2xl font-bold">11</p>
-              <p className="text-zinc-600 text-xs">Venues</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold">5</p>
-              <p className="text-zinc-600 text-xs">Cities</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold">6</p>
-              <p className="text-zinc-600 text-xs">Sports</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-emerald-500">₦2.5k</p>
-              <p className="text-zinc-600 text-xs">Per session</p>
-            </div>
-          </div>
+        </div>
+      </div>
+
+      <div className="flex justify-center gap-8 py-6 border-b border-zinc-900">
+        <div className="text-center">
+          <p className="text-xl font-bold">11</p>
+          <p className="text-zinc-600 text-xs">Venues</p>
+        </div>
+        <div className="text-center">
+          <p className="text-xl font-bold">5</p>
+          <p className="text-zinc-600 text-xs">Cities</p>
+        </div>
+        <div className="text-center">
+          <p className="text-xl font-bold">6</p>
+          <p className="text-zinc-600 text-xs">Sports</p>
+        </div>
+        <div className="text-center">
+          <p className="text-xl font-bold text-emerald-400">₦2.5k</p>
+          <p className="text-zinc-600 text-xs">Per session</p>
         </div>
       </div>
 
