@@ -12,16 +12,9 @@ export default function Dashboard() {
   useEffect(() => {
     const load = async () => {
       const { data: { session } } = await supabase.auth.getSession()
-      if (!session) {
-        router.push('/login')
-        return
-      }
+      if (!session) { router.push('/login'); return }
       setUser(session.user)
 
-      const res = await fetch('https://gregarious-patience-production-34e8.up.railway.app/sessions/', { cache: 'no-store' })
-      const sessionsData = await res.json()
-
-      // Get user bookings from Supabase directly
       const { data: userBookings } = await supabase
         .from('bookings')
         .select('*, sessions(*, venues(name, city, area))')
@@ -79,7 +72,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex justify-between items-center mt-3 pt-3 border-t border-zinc-900">
                   <span className="text-emerald-500 font-bold">₦{b.amount_ngn?.toLocaleString()}</span>
-                  {b.status === "confirmed" {b.sessions?.wa_group_url && ({b.sessions?.wa_group_url && ( (
+                  {b.status === 'confirmed' && (
                     <a href={`/chat/${b.session_id}`} className="bg-emerald-500 text-black px-4 py-1.5 rounded-full text-xs font-bold hover:bg-emerald-400 transition">Team Chat</a>
                   )}
                 </div>
