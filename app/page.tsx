@@ -85,7 +85,7 @@ export default function Home() {
             <a href={`/book/${s.id}`} key={s.id} className="bg-[#111] border border-zinc-900 rounded-xl overflow-hidden hover:border-zinc-700 transition group block">
               {s.venue_photos?.[0] && (
                 <div className="h-36 overflow-hidden">
-                  <img src={s.venue_photos[0]} alt={s.venue_name} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+                  <img src={s.venue_photos[0]} onError={(e: any) => e.target.src='https://images.unsplash.com/photo-1459865264687-595d652de67e?w=600&q=80'} alt={s.venue_name} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
                 </div>
               )}
               <div className="p-4">
