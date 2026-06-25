@@ -31,8 +31,13 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-black text-white flex items-center justify-center px-6">
-      <div className="w-full max-w-sm">
+    <main className="relative min-h-screen text-white flex items-center justify-center px-6 overflow-hidden" style={{ backgroundColor: '#14201A' }}>
+      {/* Glow circles */}
+      <div className="absolute top-[-80px] left-[-80px] w-72 h-72 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(0,200,83,0.18) 0%, transparent 70%)' }} />
+      <div className="absolute bottom-[-60px] right-[-60px] w-80 h-80 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(26,214,95,0.14) 0%, transparent 70%)' }} />
+      <div className="absolute top-[40%] right-[10%] w-48 h-48 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(255,214,0,0.07) 0%, transparent 70%)' }} />
+
+      <div className="relative w-full max-w-sm">
         <h1 className="text-3xl font-black mb-2 text-center">⚽ OpenGame</h1>
         <p className="text-zinc-400 text-center mb-8">{isSignup ? 'Create your account' : 'Welcome back'}</p>
 
@@ -43,13 +48,13 @@ export default function LoginPage() {
 
         {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
-        <button onClick={handleAuth} disabled={loading || !email || !password} className="w-full bg-green-400 text-black py-4 rounded-full font-bold text-lg disabled:opacity-50 mb-4">
+        <button onClick={handleAuth} disabled={loading || !email || !password} className="w-full py-4 rounded-full font-bold text-lg disabled:opacity-50 mb-4" style={{ backgroundColor: '#1AD65F', color: '#06210F' }}>
           {loading ? 'Loading...' : isSignup ? 'Create Account' : 'Login'}
         </button>
 
         <p className="text-center text-zinc-400 text-sm">
           {isSignup ? 'Already have an account?' : "Don't have an account?"}
-          <button onClick={() => setIsSignup(!isSignup)} className="text-green-400 ml-1 font-bold">
+          <button onClick={() => setIsSignup(!isSignup)} className="ml-1 font-bold" style={{ color: '#1AD65F' }}>
             {isSignup ? 'Login' : 'Sign up'}
           </button>
         </p>
